@@ -1,0 +1,15 @@
+{
+  "HomePage": {
+    "title": "Votre Boutique",
+    "description": "Bienvenue ! Nous offrons les meilleurs produits avec une livraison rapide.",
+    "shopNow": "Acheter maintenant",
+    "aboutUs": "À propos"
+  },
+  "Navbar": {
+    "home": "Accueil",
+    "collections": "Collections",
+    "newArrivals": "Nouveautés",
+    "aboutUs": "À Propos",
+    "customMade": "Sur Mesure"
+  }
+}
