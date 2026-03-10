@@ -3,7 +3,11 @@
     "title": "Your Brand New Store",
     "description": "Welcome! We offer the best products with fast shipping.",
     "shopNow": "Shop Now",
-    "aboutUs": "About Us"
+    "aboutUs": "About Us",
+    "locationTitle": "Find Us Here",
+    "address": "71 Place du 19 Octobre, 19110 Bort-Les-Orgues, France",
+    "latestCollections": "Latest Collections",
+    "viewCollections": "View Collections"
   },
 "Navbar": {
   "home": "Homepage",
