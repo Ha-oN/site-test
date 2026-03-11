@@ -3,6 +3,7 @@ import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import '@/app/globals.css'; 
 
 export default async function LocaleLayout({
@@ -10,7 +11,7 @@ export default async function LocaleLayout({
   params
 }: {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
 
@@ -22,12 +23,19 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
-      <body className="antialiased bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
+      {/* flex flex-col min-h-screen ensures the body takes full height 
+        allowing the footer to be pushed to the bottom.
+      */}
+      <body className="antialiased bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50 flex flex-col min-h-screen">
         <NextIntlClientProvider messages={messages}>
           <Navbar />
-          <main className="min-h-screen">
+          
+          {/* flex-grow tells the main content to take up all available space */}
+          <main className="flex-grow">
             {children}
           </main>
+
+          <Footer />
         </NextIntlClientProvider>
       </body>
     </html>

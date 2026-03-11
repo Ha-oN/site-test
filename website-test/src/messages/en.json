@@ -22,5 +22,19 @@
   "collections": {
     "title": "Our Collections",
     "view_more": "View More"
-  }
+  },
+  "Footer": {
+      "followUs": "Follow Us",
+      "quickLinks": "Quick Links",
+      "contact": "Contact",
+      "phone": "Phone",
+      "email": "Email",
+      "hours": "Business Hours",
+      "monFri": "Mon - Fri",
+      "sat": "Saturday",
+      "sun": "Sunday",
+      "closed": "Closed",
+      "allRightsReserved": "All rights reserved."
+    }
+
 }

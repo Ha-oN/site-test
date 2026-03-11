@@ -22,5 +22,18 @@
   "collections": {
     "title": "Nos Collections",
     "view_more": "En savoir plus"
+  },
+"Footer": {
+    "followUs": "Suivez-nous",
+    "quickLinks": "Liens Rapides",
+    "contact": "Contact",
+    "phone": "Téléphone",
+    "email": "Email",
+    "hours": "Heures d'ouverture",
+    "monFri": "Lun - Ven",
+    "sat": "Samedi",
+    "sun": "Dimanche",
+    "closed": "Fermé",
+    "allRightsReserved": "Tous droits réservés."
   }
 }
