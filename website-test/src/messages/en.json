@@ -9,14 +9,18 @@
     "latestCollections": "Latest Collections",
     "viewCollections": "View Collections"
   },
-"Navbar": {
-  "home": "Homepage",
-  "collections": "Collections",
-  "allCollections": "All Collections",
-  "accessories": "Accessories",
-  "clothing": "Clothing",
-  "newArrivals": "New Arrivals",
-  "aboutUs": "About Us",
-  "customMade": "Custom Made"
-}
+  "Navbar": {
+    "home": "Homepage",
+    "collections": "Collections",
+    "allCollections": "All Collections",
+    "accessories": "Accessories",
+    "clothing": "Clothing",
+    "newArrivals": "New Arrivals",
+    "aboutUs": "About Us",
+    "customMade": "Custom Made"
+  },
+  "collections": {
+    "title": "Our Collections",
+    "view_more": "View More"
+  }
 }

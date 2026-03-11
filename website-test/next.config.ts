@@ -1,10 +1,19 @@
-import createNextIntlPlugin from 'next-intl/plugin';
+import type { NextConfig } from "next";
+const createNextIntlPlugin = require('next-intl/plugin'); //
 
-const withNextIntl = createNextIntlPlugin(
-  './src/i18n/request.ts'
-);
+const withNextIntl = createNextIntlPlugin(); //
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'wdzoudpuzlfksiddvdzy.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/**',
+      },
+    ],
+  },
+};
 
-export default withNextIntl(nextConfig);
+export default withNextIntl(nextConfig); //
