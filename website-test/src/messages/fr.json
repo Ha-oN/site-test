@@ -1,18 +1,26 @@
 {
   "HomePage": {
-    "title": "Votre Boutique",
-    "description": "Bienvenue ! Nous offrons les meilleurs produits avec une livraison rapide.",
+    "title": "Votre Toute Nouvelle Boutique",
+    "description": "Bienvenue ! Nous proposons les meilleurs produits avec une expédition rapide.",
     "shopNow": "Acheter maintenant",
-    "aboutUs": "À propos",
+    "aboutUs": "À propos de nous",
     "locationTitle": "Où nous trouver",
-    "address": "71 Place du 19 Octobre, 19110 Bort-Les-Orgues, France"
+    "address": "71 Place du 19 Octobre, 19110 Bort-Les-Orgues, France",
+    "latestCollections": "Dernières Collections",
+    "viewCollections": "Voir les Collections"
   },
   "Navbar": {
     "home": "Accueil",
     "collections": "Collections",
+    "allCollections": "Toutes les Collections",
+    "accessories": "Accessoires",
+    "clothing": "Vêtements",
     "newArrivals": "Nouveautés",
-    "aboutUs": "À Propos",
-    "customMade": "Sur Mesure",
-    "locationTitle": "Où nous trouver"
+    "aboutUs": "À propos",
+    "customMade": "Sur Mesure"
+  },
+  "collections": {
+    "title": "Nos Collections",
+    "view_more": "En savoir plus"
   }
 }
