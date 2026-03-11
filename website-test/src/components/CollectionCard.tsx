@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Collection } from '@/types/collection';
+import { Collection } from '@/types/Collection';
 
 interface CollectionCardProps {
   collection: Collection;

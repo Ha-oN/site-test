@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { supabase } from '@/lib/supabase';
-import { Collection } from '@/types/collection';
+import { Collection } from '@/types/Collection';
 import { CollectionCard } from './CollectionCard';
 import { CarouselControls } from './CarouselControls';
 
