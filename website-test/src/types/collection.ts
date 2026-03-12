@@ -8,4 +8,5 @@ export interface Collection {
   date_fin?: string | null; // Optionnel
   nb_pieces: number;        // Nombre d'articles dans la collection
   active: boolean;          // Si vrai, s'affiche dans le carousel
+  theme_name?: string;       
 }
