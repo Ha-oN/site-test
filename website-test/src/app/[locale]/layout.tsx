@@ -23,14 +23,12 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
-      {/* flex flex-col min-h-screen ensures the body takes full height 
-        allowing the footer to be pushed to the bottom.
-      */}
-      <body className="antialiased bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50 flex flex-col min-h-screen">
+      {/* min-h-screen ici est crucial pour que le fond ne s'arrête pas au milieu de la page */}
+      <body className="bg-[#F5F2ED] text-[#4A3728] selection:bg-[#D2B48C] selection:text-white min-h-screen flex flex-col">
         <NextIntlClientProvider messages={messages}>
           <Navbar />
           
-          {/* flex-grow tells the main content to take up all available space */}
+          {/* main prend tout l'espace restant */}
           <main className="flex-grow">
             {children}
           </main>

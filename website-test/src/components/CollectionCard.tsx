@@ -1,26 +1,16 @@
-'use client';
-
-import Image from 'next/image';
 import { Collection } from '@/types/Collection';
 
-interface CollectionCardProps {
-  collection: Collection;
-}
-
-export function CollectionCard({ collection }: CollectionCardProps) {
+export default function CollectionCard({ collection }: { collection: Collection }) {
   return (
-    <div className="relative w-full h-full">
-      <Image
-        src={collection.presentation_pic}
+    <div className="relative w-full h-full bg-[#E5E1DA]">
+      {/* Overlay subtil pour donner de la profondeur */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#4A3728]/10 z-10" />
+      
+      <img 
+        src={collection.presentation_pic} 
         alt={collection.name}
-        fill
-        className="object-cover transition-transform duration-500"
-        priority
+        className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-1000 group-hover:scale-105"
       />
-      <div className="absolute inset-0 bg-black/40 flex flex-col justify-end p-8 text-white">
-        <h3 className="text-2xl font-bold mb-2">{collection.name}</h3>
-        <p className="text-sm opacity-90">{collection.mots_clefs}</p>
-      </div>
     </div>
   );
 }

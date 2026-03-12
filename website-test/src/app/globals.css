@@ -1,7 +1,28 @@
 @import "tailwindcss";
 
-@layer base {
-  body {
-    @apply antialiased;
-  }
+/* 1. On définit les couleurs pour Tailwind v4 */
+@theme {
+  --color-sand: #F5F2ED;
+  --color-ocre: #8B4513;
+  --color-argile: #4A3728;
+}
+
+/* 2. FORCAGE TOTAL : On cible TOUT pour tuer le noir */
+*, ::before, ::after {
+  border-color: #D2B48C;
+}
+
+/* 3. On force le fond sur html et body */
+html, body {
+  background-color: #F5F2ED !important; /* Le !important est là pour gagner le combat */
+  color: #4A3728 !important;
+  color-scheme: light !important; /* Désactive le mode sombre forcé par le navigateur */
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* 4. On s'assure que Next.js n'injecte pas de noir via les balises main */
+main {
+  background-color: #F5F2ED !important;
 }

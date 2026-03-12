@@ -6,7 +6,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning> 
-      <body className="antialiased bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
+      <body className="bg-[#F5F2ED] text-[#4A3728] selection:bg-[#D2B48C] selection:text-white">
         {children}
       </body>
     </html>

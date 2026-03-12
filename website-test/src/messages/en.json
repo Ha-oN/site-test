@@ -19,9 +19,10 @@
     "aboutUs": "About Us",
     "customMade": "Custom Made"
   },
-  "collections": {
-    "title": "Our Collections",
-    "view_more": "View More"
+  "Collections": {
+    "latest": "Our latest collections",
+    "pieces": "PIECES",
+    "loading": "Loading..."
   },
   "Footer": {
       "followUs": "Follow Us",

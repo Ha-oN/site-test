@@ -1,4 +1,5 @@
 export const SHOP_DATA = {
+  name: "magasin de maë",
   contact: {
     phone: "+33 0 00 00 00 00",
     phoneFull: "+33000000000", // Format pour le lien tel:
