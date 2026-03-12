@@ -10,7 +10,7 @@ interface AdminCollectionCardProps {
 
 export default function AdminCollectionCard({ collection, onEdit, onDelete }: AdminCollectionCardProps) {
   return (
-    <div className="group bg-zinc-900/50 rounded-2xl overflow-hidden border border-zinc-800 hover:border-zinc-600 transition-all">
+    <div className="group bg-white rounded-2xl overflow-hidden border border-argile/10 hover:border-ocre/30 transition-all shadow-sm">
       <div className="relative h-52 w-full overflow-hidden">
         <img 
           src={collection.presentation_pic} 
@@ -24,13 +24,13 @@ export default function AdminCollectionCard({ collection, onEdit, onDelete }: Ad
         )}
       </div>
       <div className="p-5">
-        <h3 className="font-black uppercase truncate text-white">{collection.name}</h3>
+        <h3 className="font-black uppercase truncate text-argile">{collection.name}</h3>
         <div className="flex justify-between items-center mt-4">
           <span className="text-xs text-zinc-500 font-bold">{collection.nb_pieces} PIÈCES</span>
           <div className="flex gap-2">
             <button 
               onClick={() => onEdit(collection)}
-              className="p-2 bg-zinc-800 text-zinc-400 rounded-lg hover:bg-white hover:text-black transition-colors"
+              className="p-2 bg-sand text-argile/60 rounded-lg hover:bg-ocre hover:text-sand transition-colors"
             >
               <Edit3 size={16}/>
             </button>

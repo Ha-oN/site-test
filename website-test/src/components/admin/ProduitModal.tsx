@@ -1,6 +1,7 @@
 'use client';
+
 import { useState, useEffect } from 'react';
-import { X, Upload, Edit3 } from 'lucide-react';
+import { X, Upload, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { Collection } from '@/types/Collection';
 import { Produit } from '@/types/Produit';
@@ -11,8 +12,9 @@ interface ProduitModalProps {
   onRefresh: () => void;
 }
 
+// Label harmonisé avec le thème
 const FieldLabel = ({ children }: { children: React.ReactNode }) => (
-  <label className="text-[10px] text-zinc-500 mb-1 ml-2 font-bold uppercase tracking-widest block">
+  <label className="text-[10px] text-argile/50 mb-1 ml-2 font-black uppercase tracking-widest block">
     {children}
   </label>
 );
@@ -75,23 +77,37 @@ export default function ProduitModal({ produit, onClose, onRefresh }: ProduitMod
   };
 
   return (
-    <div className="fixed inset-0 bg-black/95 backdrop-blur-md flex items-center justify-center p-4 z-50">
-      <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl w-full max-w-xl max-h-[90vh] overflow-y-auto text-white">
+    // Overlay Argile avec flou
+    <div className="fixed inset-0 bg-argile/40 backdrop-blur-sm flex items-center justify-center p-4 z-[100]">
+      
+      {/* Container Modal : Fond Sand */}
+      <div className="bg-sand border border-argile/10 p-8 rounded-3xl w-full max-w-xl max-h-[90vh] overflow-y-auto shadow-2xl animate-in fade-in zoom-in duration-200">
+        
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-black italic tracking-tighter">
-            {produit ? 'MODIFIER PRODUIT' : 'NOUVEAU PRODUIT'}
+          <h2 className="text-3xl font-black italic tracking-tighter text-argile uppercase">
+            {produit ? 'Modifier Produit' : 'Nouveau Produit'}
           </h2>
-          <button onClick={onClose} className="hover:rotate-90 transition-transform"><X size={28} /></button>
+          <button 
+            onClick={onClose} 
+            className="p-2 hover:bg-argile/10 rounded-full transition-all text-argile/50 hover:text-argile"
+          >
+            <X size={24} />
+          </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
+          
+          {/* Zone Upload Image */}
           <div>
             <FieldLabel>Image du produit</FieldLabel>
-            <div className="relative border-2 border-dashed border-zinc-700 rounded-2xl h-40 flex items-center justify-center cursor-pointer overflow-hidden group">
+            <div className="relative border-2 border-dashed border-argile/20 bg-white/50 rounded-2xl h-48 flex items-center justify-center cursor-pointer overflow-hidden group hover:border-ocre/50 transition-colors">
               {previewUrl ? (
-                <img src={previewUrl} className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-30 transition-opacity" />
+                <img src={previewUrl} className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
               ) : (
-                <Upload className="text-zinc-500" />
+                <div className="flex flex-col items-center gap-2 text-argile/30">
+                  <Upload size={32} />
+                  <span className="text-[10px] font-black uppercase">Cliquer pour uploader</span>
+                </div>
               )}
               <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={e => {
                 if(e.target.files?.[0]) {
@@ -102,49 +118,95 @@ export default function ProduitModal({ produit, onClose, onRefresh }: ProduitMod
             </div>
           </div>
 
+          {/* Nom du produit */}
           <div>
             <FieldLabel>Nom du produit</FieldLabel>
-            <input placeholder="NOM DU PRODUIT" value={formData.name} required className="w-full bg-black border border-zinc-800 p-4 rounded-xl font-bold uppercase focus:border-white transition-colors" 
-              onChange={e => setFormData({...formData, name: e.target.value.toUpperCase()})} />
+            <input 
+              placeholder="EX: T-SHIRT OVERSIZE" 
+              value={formData.name} 
+              required 
+              className="w-full bg-white border border-argile/20 p-4 rounded-xl font-bold uppercase text-argile focus:border-ocre/50 transition-colors shadow-sm outline-none" 
+              onChange={e => setFormData({...formData, name: e.target.value.toUpperCase()})} 
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
+            {/* Collection */}
             <div>
               <FieldLabel>Collection parente</FieldLabel>
-              <select value={formData.collection_id} required className="w-full bg-black border border-zinc-800 p-4 rounded-xl text-sm focus:border-white transition-colors"
-                onChange={e => setFormData({...formData, collection_id: e.target.value})}>
+              <select 
+                value={formData.collection_id} 
+                required 
+                className="w-full bg-white border border-argile/20 p-4 rounded-xl text-sm text-argile focus:border-ocre/50 transition-colors shadow-sm outline-none appearance-none"
+                onChange={e => setFormData({...formData, collection_id: e.target.value})}
+              >
                 <option value="">CHOISIR...</option>
                 {collections.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
             </div>
+            {/* Type */}
             <div>
               <FieldLabel>Type de pièce</FieldLabel>
-              <input placeholder="EX: T-SHIRT, POSTER" value={formData.type} className="w-full bg-black border border-zinc-800 p-4 rounded-xl text-sm focus:border-white"
-                onChange={e => setFormData({...formData, type: e.target.value.toUpperCase()})} />
+              <input 
+                placeholder="EX: T-SHIRT, POSTER" 
+                value={formData.type} 
+                className="w-full bg-white border border-argile/20 p-4 rounded-xl text-sm text-argile focus:border-ocre/50 outline-none shadow-sm"
+                onChange={e => setFormData({...formData, type: e.target.value.toUpperCase()})} 
+              />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
+            {/* Prix */}
             <div>
               <FieldLabel>Prix (€)</FieldLabel>
-              <input type="number" value={formData.prix} className="w-full bg-black border border-zinc-800 p-4 rounded-xl text-sm focus:border-white"
-                onChange={e => setFormData({...formData, prix: parseFloat(e.target.value)})} />
+              <input 
+                type="number" 
+                value={formData.prix} 
+                className="w-full bg-white border border-argile/20 p-4 rounded-xl text-sm text-argile focus:border-ocre/50 outline-none shadow-sm"
+                onChange={e => setFormData({...formData, prix: parseFloat(e.target.value)})} 
+              />
             </div>
+            {/* Stock */}
             <div>
               <FieldLabel>Stock (Exemplaires)</FieldLabel>
-              <input type="number" value={formData.exemplaires} className="w-full bg-black border border-zinc-800 p-4 rounded-xl text-sm focus:border-white"
-                onChange={e => setFormData({...formData, exemplaires: parseInt(e.target.value)})} />
+              <input 
+                type="number" 
+                value={formData.exemplaires} 
+                className="w-full bg-white border border-argile/20 p-4 rounded-xl text-sm text-argile focus:border-ocre/50 outline-none shadow-sm"
+                onChange={e => setFormData({...formData, exemplaires: parseInt(e.target.value)})} 
+              />
             </div>
           </div>
 
-          <label className="flex items-center gap-3 bg-black/40 p-4 rounded-xl border border-zinc-800 cursor-pointer hover:bg-black/60 transition-colors">
-            <input type="checkbox" checked={formData.sold_out} onChange={e => setFormData({...formData, sold_out: e.target.checked})} className="w-5 h-5 accent-white" />
-            <span className="text-sm font-bold uppercase text-red-500">Marquer comme SOLD OUT</span>
+          {/* Checkbox Sold Out */}
+          <label className="flex items-center gap-3 bg-white/50 p-4 rounded-xl border border-argile/10 cursor-pointer hover:bg-white transition-colors">
+            <input 
+              type="checkbox" 
+              checked={formData.sold_out} 
+              onChange={e => setFormData({...formData, sold_out: e.target.checked})} 
+              className="w-5 h-5 accent-ocre" 
+            />
+            <span className="text-xs font-black uppercase text-red-600">Marquer comme SOLD OUT</span>
           </label>
 
-          <button disabled={uploading} type="submit" className="w-full bg-white text-black py-5 rounded-2xl font-black hover:bg-zinc-200 transition-all">
-            {uploading ? "CHARGEMENT..." : "ENREGISTRER"}
-          </button>
+          {/* Boutons d'action */}
+          <div className="flex gap-4 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 px-6 py-4 rounded-2xl border border-argile/20 font-bold text-argile hover:bg-white transition-colors"
+            >
+              ANNULER
+            </button>
+            <button 
+              disabled={uploading} 
+              type="submit" 
+              className="flex-[2] bg-ocre text-sand py-4 rounded-2xl font-black uppercase tracking-tighter hover:scale-[1.02] transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+            >
+              {uploading ? <Loader2 className="animate-spin" size={20} /> : "ENREGISTRER"}
+            </button>
+          </div>
         </form>
       </div>
     </div>

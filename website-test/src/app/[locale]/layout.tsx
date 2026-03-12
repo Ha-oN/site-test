@@ -1,38 +1,29 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
-import { notFound } from 'next/navigation';
-import { routing } from '@/i18n/routing';
+import { Inter } from 'next/font/google';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import '@/app/globals.css'; 
+import '../globals.css'; // Vérifiez que le chemin vers votre CSS est correct
+
+const inter = Inter({ subsets: ['latin'] });
 
 export default async function LocaleLayout({
   children,
   params
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: string }>; // On définit params comme une Promesse
 }) {
+  // On attend que les paramètres soient disponibles
   const { locale } = await params;
-
-  if (!routing.locales.includes(locale as any)) {
-    notFound();
-  }
-
   const messages = await getMessages();
 
   return (
     <html lang={locale}>
-      {/* min-h-screen ici est crucial pour que le fond ne s'arrête pas au milieu de la page */}
-      <body className="bg-[#F5F2ED] text-[#4A3728] selection:bg-[#D2B48C] selection:text-white min-h-screen flex flex-col">
+      <body className={inter.className}>
         <NextIntlClientProvider messages={messages}>
           <Navbar />
-          
-          {/* main prend tout l'espace restant */}
-          <main className="flex-grow">
-            {children}
-          </main>
-
+          {children}
           <Footer />
         </NextIntlClientProvider>
       </body>

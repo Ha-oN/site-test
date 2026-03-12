@@ -9,7 +9,7 @@ interface DefaultThemeProps {
 
 export default function DefaultTheme({ children, collection }: DefaultThemeProps) {
   return (
-    <main className="min-h-screen bg-[#F5F2ED] text-[#4A3728] pb-24">
+    <main className="min-h-screen pb-24">
       {/* Header organique */}
       <header className="relative pt-24 pb-16 px-8 text-center border-b border-[#D2B48C]/20 mx-auto max-w-4xl">
         <span className="text-[#A0522D] text-[10px] uppercase tracking-[0.6em] mb-4 block">

@@ -1,28 +1,39 @@
 @import "tailwindcss";
 
-/* 1. On définit les couleurs pour Tailwind v4 */
 @theme {
+  /* Change cette valeur pour modifier le fond de TOUT le site (hors Japon) */
   --color-sand: #F5F2ED;
+  /* Change cette valeur pour modifier la couleur du texte principal */
   --color-ocre: #8B4513;
+  /* Change cette valeur pour modifier la couleur de tes boutons ou accents */
   --color-argile: #4A3728;
+
+  /* Couleurs pour le thème Japon */
+  --color-matcha-base: #acc197;
+  --color-matcha-light: #cfdbbf;
+  --color-matcha-dark: #6b7d56;
 }
 
-/* 2. FORCAGE TOTAL : On cible TOUT pour tuer le noir */
-*, ::before, ::after {
-  border-color: #D2B48C;
-}
-
-/* 3. On force le fond sur html et body */
+/* On réinitialise tout proprement */
 html, body {
-  background-color: #F5F2ED !important; /* Le !important est là pour gagner le combat */
-  color: #4A3728 !important;
-  color-scheme: light !important; /* Désactive le mode sombre forcé par le navigateur */
+  background-color: var(--color-sand) !important;
+  color: var(--color-argile) !important;
   margin: 0;
   padding: 0;
   min-height: 100vh;
 }
 
-/* 4. On s'assure que Next.js n'injecte pas de noir via les balises main */
-main {
-  background-color: #F5F2ED !important;
+/* Pour le thème Japon, on s'assure qu'il couvre bien tout */
+.bg-matcha-base {
+  background-color: #acc197 !important;
+}
+
+:root {
+  /* Force le navigateur à savoir que le site est clair */
+  color-scheme: light;
+}
+
+html, body {
+  background-color: #F5F2ED !important; /* Votre couleur Sand */
+  color: #4A3728 !important;
 }
