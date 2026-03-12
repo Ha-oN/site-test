@@ -46,7 +46,7 @@ export default function CollectionsCarousel() {
       
       {/* 1. HEADER : STYLE ÉDITORIAL CÉRAMIQUE */}
       <div className="text-center mb-12 z-20 px-4">
-        <p className="text-[#A0522D] font-medium uppercase tracking-[0.4em] text-[10px] md:text-xs mb-4 opacity-70">
+        <p className="text-[#A0522D] font-big uppercase tracking-[0.4em] text-[10px] md:text-xs mb-4 opacity-70">
           {t('latest')}
         </p>
         

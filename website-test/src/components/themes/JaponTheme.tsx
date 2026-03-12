@@ -51,6 +51,30 @@ export default function JaponTheme({ children, collection }: { children: React.R
           {children}
         </div>
       </div>
+
+      {/* AJOUT DES STYLES ICI POUR RÉACTIVER L'ANIMATION */}
+      <style jsx>{`
+        .sakura-petal {
+          top: -10%;
+          border-radius: 100% 0% 100% 20% / 100% 20% 100% 0%;
+          transform: rotate(45deg);
+          animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+          0% {
+            top: -10%;
+            transform: translateX(0) rotate(0deg) scale(1);
+          }
+          50% {
+            transform: translateX(100px) rotate(180deg) scale(0.8);
+          }
+          100% {
+            top: 110%;
+            transform: translateX(50px) rotate(360deg) scale(1);
+          }
+        }
+      `}</style>
     </div>
   );
 }
