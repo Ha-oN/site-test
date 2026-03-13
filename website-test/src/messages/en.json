@@ -10,7 +10,7 @@
     "viewCollections": "View Collections"
   },
   "Navbar": {
-    "home": "Homepage",
+    "home": "Home",
     "collections": "Collections",
     "allCollections": "All Collections",
     "accessories": "Accessories",
@@ -22,20 +22,41 @@
   "Collections": {
     "latest": "Our latest collections",
     "pieces": "PIECES",
-    "loading": "Loading..."
+    "loading": "Loading collections...",
+    "viewProject": "View Project",
+    "noCollections": "No collections available at the moment.",
+    "viewCollections": "View All Collections"
   },
   "Footer": {
-      "followUs": "Follow Us",
-      "quickLinks": "Quick Links",
-      "contact": "Contact",
-      "phone": "Phone",
-      "email": "Email",
-      "hours": "Business Hours",
-      "monFri": "Mon - Fri",
-      "sat": "Saturday",
-      "sun": "Sunday",
-      "closed": "Closed",
-      "allRightsReserved": "All rights reserved."
-    }
-
+    "description": "Creative studio and boutique for exclusive pieces. Each collection tells a unique story through design and materials.",
+    "followUs": "Follow Us",
+    "quickLinks": "Navigation",
+    "navigationTitle": "Navigation",
+    "contact": "Contact",
+    "contactTitle": "Contact",
+    "emailLabel": "Email",
+    "phoneLabel": "Phone",
+    "phone": "Phone",
+    "email": "Email",
+    "hours": "Studio Hours",
+    "hoursTitle": "Studio Hours",
+    "monFri": "Mon - Fri",
+    "sat": "Saturday",
+    "sun": "Sunday",
+    "closed": "Closed",
+    "allRightsReserved": "All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms & Conditions"
+  },
+  "Admin": {
+    "title": "Dashboard",
+    "newProduct": "New Product",
+    "newCollection": "New Collection",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "uploadImage": "Click to upload image",
+    "loading": "Processing..."
+  }
 }

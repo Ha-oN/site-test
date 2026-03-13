@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { X, Upload, Loader2 } from 'lucide-react';
+import { X, Upload, Loader2, Calendar, Hash } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { Collection } from '@/types/Collection';
 
@@ -25,7 +25,10 @@ export default function CollectionModal({ collection, onClose, onRefresh }: Coll
   const [formData, setFormData] = useState({
     name: collection?.name || '',
     mots_clefs: collection?.mots_clefs || '',
-    theme_name: collection?.theme_name || 'default'
+    theme_name: collection?.theme_name || 'default',
+    nb_pieces: collection?.nb_pieces || 0, // Nouveau champ
+    date_debut: collection?.date_debut || '',    // Nouveau champ
+    date_fin: collection?.date_fin || ''         // Nouveau champ
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,10 +38,8 @@ export default function CollectionModal({ collection, onClose, onRefresh }: Coll
     try {
       let finalImageUrl = previewUrl;
 
-      // Logique d'upload identique à ProduitModal
       if (imageFile) {
         const fileName = `${Date.now()}-coll.${imageFile.name.split('.').pop()}`;
-        // Utilisation du même bucket 'collections-pics' que ProduitModal
         const { error: upErr } = await supabase.storage
           .from('collections-pics')
           .upload(fileName, imageFile);
@@ -53,7 +54,10 @@ export default function CollectionModal({ collection, onClose, onRefresh }: Coll
         name: formData.name,
         mots_clefs: formData.mots_clefs,
         theme_name: formData.theme_name,
-        presentation_pic: finalImageUrl // On utilise le nom de colonne correct pour les collections
+        presentation_pic: finalImageUrl,
+        nb_pieces: formData.nb_pieces, // Envoi à Supabase
+        date_debut: formData.date_debut || null,
+        date_fin: formData.date_fin || null
       };
 
       const { error } = collection?.id 
@@ -73,9 +77,9 @@ export default function CollectionModal({ collection, onClose, onRefresh }: Coll
 
   return (
     <div className="fixed inset-0 bg-argile/40 backdrop-blur-sm flex items-center justify-center p-4 z-[100]">
-      <div className="bg-sand border border-argile/10 p-8 rounded-3xl w-full max-w-lg shadow-2xl animate-in fade-in zoom-in duration-200">
+      <div className="bg-sand border border-argile/10 p-8 rounded-3xl w-full max-w-xl max-h-[95vh] overflow-y-auto shadow-2xl animate-in fade-in zoom-in duration-200">
         
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-6">
           <h2 className="text-3xl font-black italic tracking-tighter text-argile uppercase">
             {collection ? 'Modifier Collection' : 'Nouvelle Collection'}
           </h2>
@@ -84,11 +88,11 @@ export default function CollectionModal({ collection, onClose, onRefresh }: Coll
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Zone Upload Image */}
           <div>
             <FieldLabel>Photo d'exposition</FieldLabel>
-            <div className="relative border-2 border-dashed border-argile/20 bg-white/50 rounded-2xl h-64 flex items-center justify-center cursor-pointer overflow-hidden group hover:border-ocre/50 transition-colors">
+            <div className="relative border-2 border-dashed border-argile/20 bg-white/50 rounded-2xl h-48 flex items-center justify-center cursor-pointer overflow-hidden group hover:border-ocre/50 transition-colors">
               {previewUrl ? (
                 <img src={previewUrl} className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
               ) : (
@@ -111,22 +115,57 @@ export default function CollectionModal({ collection, onClose, onRefresh }: Coll
             </div>
           </div>
 
-          {/* Nom */}
-          <div>
-            <FieldLabel>Nom du projet</FieldLabel>
-            <input 
-              required
-              value={formData.name} 
-              className="w-full bg-white border border-argile/20 p-4 rounded-xl font-bold uppercase text-argile focus:border-ocre/50 outline-none shadow-sm"
-              onChange={e => setFormData({...formData, name: e.target.value.toUpperCase()})} 
-            />
+          {/* Nom & Nombre de pièces */}
+          <div className="grid grid-cols-3 gap-4">
+            <div className="col-span-2">
+              <FieldLabel>Nom du projet</FieldLabel>
+              <input 
+                required
+                value={formData.name} 
+                placeholder="EX: TOKYO NIGHTS"
+                className="w-full bg-white border border-argile/20 p-4 rounded-xl font-bold uppercase text-argile focus:border-ocre/50 outline-none shadow-sm"
+                onChange={e => setFormData({...formData, name: e.target.value.toUpperCase()})} 
+              />
+            </div>
+            <div>
+              <FieldLabel>Nb Pièces</FieldLabel>
+              <input 
+                type="number"
+                value={formData.nb_pieces} 
+                className="w-full bg-white border border-argile/20 p-4 rounded-xl font-bold text-argile focus:border-ocre/50 outline-none shadow-sm"
+                onChange={e => setFormData({...formData, nb_pieces: parseInt(e.target.value)})} 
+              />
+            </div>
           </div>
 
-          {/* Mots Clefs */}
+          {/* Dates de début et fin */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <FieldLabel>Date de début</FieldLabel>
+              <input 
+                type="date"
+                value={formData.date_debut} 
+                className="w-full bg-white border border-argile/20 p-4 rounded-xl text-sm text-argile focus:border-ocre/50 outline-none shadow-sm"
+                onChange={e => setFormData({...formData, date_debut: e.target.value})} 
+              />
+            </div>
+            <div>
+              <FieldLabel>Date de fin</FieldLabel>
+              <input 
+                type="date"
+                value={formData.date_fin} 
+                className="w-full bg-white border border-argile/20 p-4 rounded-xl text-sm text-argile focus:border-ocre/50 outline-none shadow-sm"
+                onChange={e => setFormData({...formData, date_fin: e.target.value})} 
+              />
+            </div>
+          </div>
+
+          {/* Description */}
           <div>
             <FieldLabel>Description / Mots clefs</FieldLabel>
             <input 
               value={formData.mots_clefs} 
+              placeholder="Minimalisme, Urbain, Noir & Blanc"
               className="w-full bg-white border border-argile/20 p-4 rounded-xl text-sm text-argile focus:border-ocre/50 outline-none shadow-sm"
               onChange={e => setFormData({...formData, mots_clefs: e.target.value})} 
             />

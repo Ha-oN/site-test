@@ -28,8 +28,13 @@ export default function CollectionsCarousel() {
     fetchCollections();
   }, []);
 
-  const nextSlide = () => setCurrentIndex((prev) => (prev === collections.length - 1 ? 0 : prev + 1));
-  const prevSlide = () => setCurrentIndex((prev) => (prev === 0 ? collections.length - 1 : prev - 1));
+  // On ajuste la navigation pour ne pas dépasser (vu qu'on en affiche 2)
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev >= collections.length - 2 ? 0 : prev + 1));
+  };
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev === 0 ? collections.length - 2 : prev - 1));
+  };
 
   if (loading) return (
     <div className="h-[80vh] flex items-center justify-center text-[#8B4513] italic font-serif text-xl bg-[#F5F2ED]">
@@ -39,63 +44,66 @@ export default function CollectionsCarousel() {
   
   if (collections.length === 0) return null;
 
-  const currentCollection = collections[currentIndex];
-
   return (
-    <section className="relative min-h-[90vh] w-full flex flex-col items-center justify-center py-16 bg-[#F5F2ED] overflow-hidden">
+    <section className="relative min-h-screen w-full flex flex-col items-center justify-center py-20 bg-[#F5F2ED] overflow-hidden">
       
-      {/* 1. HEADER : STYLE ÉDITORIAL CÉRAMIQUE */}
-      <div className="text-center mb-12 z-20 px-4">
-        <p className="text-[#A0522D] font-big uppercase tracking-[0.4em] text-[10px] md:text-xs mb-4 opacity-70">
+      {/* 1. HEADER : STATIQUE */}
+      <div className="text-center mb-16 z-20 px-4">
+        <p className="text-[#A0522D] font-bold uppercase tracking-[0.4em] text-[10px] md:text-3xl font-serif mb-10 opacity-70">
           {t('latest')}
         </p>
-        
-        <h2 
-          key={`title-${currentCollection.id}`}
-          className="text-5xl md:text-8xl font-serif italic tracking-tight text-[#4A3728] uppercase animate-in fade-in slide-in-from-bottom-8 duration-1000"
-        >
-          {currentCollection.name}
-        </h2>
+
       </div>
 
-      {/* 2. CENTRE : CAROUSEL */}
-      <div className="relative w-full max-w-6xl flex items-center justify-center px-6 md:px-20">
+      {/* 2. CENTRE : CAROUSEL DOUBLE VERTICAL */}
+      <div className="relative w-full max-w-5xl px-12 md:px-4">
         
         <CarouselControls onPrev={prevSlide} onNext={nextSlide} />
 
-        <div className="relative w-full aspect-video md:aspect-[21/9] shadow-[0_20px_50px_rgba(139,69,19,0.15)] rounded-[2rem] overflow-hidden">
-          {collections.map((collection, index) => {
-            const isActive = index === currentIndex;
-            return (
+        {/* Fenêtre de visualisation */}
+        <div className="overflow-hidden rounded-[2.5rem]">
+          <div 
+            className="flex transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]"
+            style={{ transform: `translateX(-${currentIndex * 50}%)` }}
+          >
+            {collections.map((collection) => (
               <div
                 key={collection.id}
-                className={`absolute inset-0 transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] ${
-                  isActive 
-                    ? 'opacity-100 scale-100 z-10' 
-                    : 'opacity-0 scale-105 pointer-events-none z-0'
-                }`}
+                className="min-w-[50%] px-2 md:px-4 transition-all duration-500"
               >
-                <Link href={`/collections/${collection.id}`} className="block w-full h-full group">
-                  <CollectionCard collection={collection} />
+                <Link href={`/collections/${collection.id}`} className="block group">
+                  <div className="relative aspect-[3/4] overflow-hidden rounded-[2rem] shadow-xl bg-[#E5E1DA]">
+                    {/* On s'assure que CollectionCard ne contient plus de titre interne */}
+                    <CollectionCard collection={collection} />
+                    
+                    {/* Overlay discret au survol */}
+                    <div className="absolute inset-0 bg-[#4A3728]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+                  
+                  {/* Titre et infos SOUS l'image (plus sur l'image) */}
+                  <div className="mt-6 text-center group-hover:translate-y-[-5px] transition-transform duration-500">
+                    <h3 className="text-xl md:text-2xl font-serif italic text-[#4A3728] uppercase mb-2">
+                      {collection.name}
+                    </h3>
+                    <p className="text-[10px] tracking-[0.2em] text-[#8B4513] uppercase opacity-60">
+                      {collection.nb_pieces} {t('pieces')}
+                    </p>
+                  </div>
                 </Link>
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* 3. INFOS : MATIÈRES ET DÉTAILS */}
-      <div 
-        key={`info-${currentCollection.id}`}
-        className="mt-12 text-center z-20 px-4 animate-in fade-in slide-in-from-top-6 duration-1000"
-      >
-        <div className="flex items-center justify-center gap-8">
-          <span className="h-[1px] w-12 bg-[#D2B48C]/50" />
-          <p className="text-[#8B4513] font-medium tracking-[0.2em] uppercase text-[10px] md:text-xs italic">
-            {currentCollection.nb_pieces} {t('pieces')} — {currentCollection.mots_clefs}
-          </p>
-          <span className="h-[1px] w-12 bg-[#D2B48C]/50" />
-        </div>
+      {/* 3. CTA : VOIR TOUT */}
+      <div className="mt-16">
+        <Link 
+          href="/collections"
+          className="text-[10px] font-black uppercase tracking-[0.3em] text-[#8B4513] border-b border-[#8B4513]/20 pb-2 hover:text-[#A0522D] transition-all"
+        >
+          {t('viewCollections')}
+        </Link>
       </div>
 
     </section>

@@ -1,9 +1,9 @@
 {
   "HomePage": {
-    "title": "Votre Toute Nouvelle Boutique",
-    "description": "Bienvenue ! Nous proposons les meilleurs produits avec une expédition rapide.",
-    "shopNow": "Acheter maintenant",
-    "aboutUs": "À propos de nous",
+    "title": "Votre Nouvelle Boutique",
+    "description": "Bienvenue ! Nous proposons les meilleurs produits avec une livraison rapide.",
+    "shopNow": "Acheter Maintenant",
+    "aboutUs": "À Propos",
     "locationTitle": "Où nous trouver",
     "address": "71 Place du 19 Octobre, 19110 Bort-Les-Orgues, France",
     "latestCollections": "Dernières Collections",
@@ -16,25 +16,46 @@
     "accessories": "Accessoires",
     "clothing": "Vêtements",
     "newArrivals": "Nouveautés",
-    "aboutUs": "À propos",
+    "aboutUs": "À Propos",
     "customMade": "Sur Mesure"
   },
-  "collections": {
+  "Collections": {
     "latest": "Nos dernières collections",
-    "title": "Nos Collections",
-    "view_more": "En savoir plus"
+    "pieces": "PIÈCES",
+    "loading": "Chargement des collections...",
+    "viewProject": "Découvrir le projet",
+    "noCollections": "Aucune collection disponible pour le moment."
   },
-"Footer": {
-    "followUs": "Suivez-nous",
-    "quickLinks": "Liens Rapides",
+  "Footer": {
+    "description": "Studio de création et boutique de pièces exclusives. Chaque collection raconte une histoire unique à travers le design et la matière.",
+    "followUs": "Nous suivre",
+    "quickLinks": "Navigation",
+    "navigationTitle": "Navigation",
     "contact": "Contact",
+    "contactTitle": "Contact",
+    "emailLabel": "Email",
+    "phoneLabel": "Téléphone",
     "phone": "Téléphone",
     "email": "Email",
-    "hours": "Heures d'ouverture",
+    "hours": "Horaires du Studio",
+    "hoursTitle": "Horaires du Studio",
     "monFri": "Lun - Ven",
     "sat": "Samedi",
     "sun": "Dimanche",
     "closed": "Fermé",
-    "allRightsReserved": "Tous droits réservés."
+    "allRightsReserved": "Tous droits réservés.",
+    "privacy": "Confidentialité",
+    "terms": "Mentions Légales"
+  },
+  "Admin": {
+    "title": "Tableau de Bord",
+    "newProduct": "Nouveau Produit",
+    "newCollection": "Nouvelle Collection",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "uploadImage": "Cliquer pour uploader une image",
+    "loading": "Traitement en cours..."
   }
 }
