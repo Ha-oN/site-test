@@ -12,6 +12,7 @@ import LoginForm from '@/components/admin/LoginForm';
 import AdminCollectionCard from '@/components/admin/AdminCollectionCard';
 import CollectionModal from '@/components/admin/CollectionModal';
 import ProduitModal from '@/components/admin/ProduitModal';
+import SaleButton from '@/components/admin/SaleButton'; // Import du nouveau composant
 
 export default function AdminPage() {
   const router = useRouter();
@@ -67,7 +68,6 @@ export default function AdminPage() {
     }
   };
 
-  // 1. Loader harmonisé (Fond Sand au lieu de Noir)
   if (loading) return <div className="h-screen bg-sand flex items-center justify-center text-argile italic font-black">CHARGEMENT...</div>;
 
   if (!session || !isAdmin) return <LoginForm onSuccess={() => checkUser()} />;
@@ -82,6 +82,9 @@ export default function AdminPage() {
           <p className="text-argile/60 text-xs mt-2 font-bold tracking-widest">{session.user.email}</p>
         </div>
         <div className="flex gap-3">
+          {/* BOUTON CAISSE */}
+          <SaleButton />
+
           <button onClick={() => router.push('/')} className="px-5 py-3 rounded-full border border-argile/20 bg-white/50 flex items-center gap-2 font-bold hover:bg-white transition-colors text-sm text-argile">
             <Home size={16}/> SITE
           </button>
@@ -129,7 +132,6 @@ export default function AdminPage() {
           ))
         ) : (
           produits.map((prod) => (
-            /* Card Produit harmonisée : bg-white avec bordures argile */
             <div key={prod.id} className="group bg-white rounded-2xl overflow-hidden border border-argile/10 hover:border-ocre/30 transition-all shadow-sm">
               <div className="relative h-48 overflow-hidden bg-sand">
                 <img src={prod.image_url} className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" alt={prod.name} />
