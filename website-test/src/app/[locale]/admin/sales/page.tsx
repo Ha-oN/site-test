@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import type { Produit } from '@/types/Produit';
 import type { Collection } from '@/types/Collection';
+import { Banknote, CreditCard, Search, Trash2, Plus, Minus, LayoutGrid } from 'lucide-react';
 
 export default function SalesPage() {
   const [produits, setProduits] = useState<Produit[]>([]);
@@ -21,8 +22,8 @@ export default function SalesPage() {
       supabase.from('produits').select('*').gt('exemplaires', 0).eq('sold_out', false).order('name'),
       supabase.from('collections').select('*').order('name')
     ]);
-    if (prodRes.data) setProduits(prodRes.data);
-    if (collRes.data) setCollections(collRes.data);
+    if (prodRes.data) setProduits(prodRes.data as Produit[]);
+    if (collRes.data) setCollections(collRes.data as Collection[]);
   }
 
   const filteredProduits = produits.filter(p => {
@@ -57,9 +58,10 @@ export default function SalesPage() {
   const handleFinalizeSale = async (method: 'ESPECES' | 'CARTE') => {
     if (cart.length === 0) return;
     
+    const total = calculateTotal().toFixed(2);
     const confirmMsg = method === 'ESPECES' 
-      ? `Confirmer l'encaissement de ${calculateTotal().toFixed(2)}€ en espèces ?`
-      : `Confirmer le paiement par carte de ${calculateTotal().toFixed(2)}€ ?`;
+      ? `Confirmer le règlement de ${total}€ en ESPÈCES ?`
+      : `Confirmer le règlement de ${total}€ par CARTE ?`;
 
     if (!confirm(confirmMsg)) return;
 
@@ -71,36 +73,43 @@ export default function SalesPage() {
     });
 
     if (!error) {
-      alert(`Vente enregistrée (${method}) !`);
+      alert(`Transaction validée (${method}).`);
       setCart([]);
       fetchInitialData();
     } else {
-      alert("Erreur: " + error.message);
+      alert("Erreur transactionnelle: " + error.message);
     }
     setLoading(false);
   };
 
   return (
-    <div className="flex h-screen bg-gray-100 text-black overflow-hidden font-sans">
+    <div className="flex h-screen bg-neutral-100 text-neutral-900 overflow-hidden font-sans antialiased">
       
-      {/* SECTION CATALOGUE (MAJEURE PARTIE) */}
-      <div className="flex-1 flex flex-col p-6 overflow-y-auto">
+      {/* SECTION CATALOGUE (OCCUPE L'ESPACE RESTANT) */}
+      <div className="flex-1 flex flex-col p-6 overflow-y-auto border-r border-neutral-200">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-          <h1 className="text-3xl font-black uppercase tracking-tighter">Caisse</h1>
-          <div className="flex gap-2 w-full md:w-2/3">
-            <input 
-              type="text"
-              placeholder="🔍 Nom du produit..."
-              className="flex-1 p-3 rounded-xl shadow-inner bg-white outline-none focus:ring-2 focus:ring-blue-500"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+          <div className="flex items-center gap-3">
+            <LayoutGrid className="text-neutral-400" size={28} />
+            <h1 className="text-3xl font-extrabold tracking-tighter text-neutral-950 uppercase">Point de Vente</h1>
+          </div>
+          
+          <div className="flex gap-2 w-full md:w-2/3 shadow-sm rounded-xl overflow-hidden border border-neutral-200 bg-white p-1">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" size={18} />
+              <input 
+                type="text"
+                placeholder="Rechercher désignation ou référence..."
+                className="w-full pl-10 pr-3 py-2.5 rounded-lg bg-neutral-50 outline-none focus:ring-1 focus:ring-neutral-400 text-sm"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
             <select 
-              className="p-3 rounded-xl bg-white shadow-sm outline-none"
+              className="px-3 py-2.5 rounded-lg bg-white outline-none text-sm font-medium text-neutral-700 border border-neutral-100"
               value={selectedCollection}
               onChange={(e) => setSelectedCollection(e.target.value)}
             >
-              <option value="all">Toutes Collections</option>
+              <option value="all">Toutes Catégories</option>
               {collections.map(c => (
                 <option key={c.id} value={c.id}>{c.name}</option>
               ))}
@@ -108,29 +117,28 @@ export default function SalesPage() {
           </div>
         </div>
 
-        {/* GRILLE PRODUITS AVEC IMAGES */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
           {filteredProduits.map(p => (
             <button 
               key={p.id} 
               onClick={() => addToCart(p)}
-              className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col border border-transparent hover:border-blue-500"
+              className="group bg-white rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col border border-neutral-200 hover:border-neutral-900"
             >
-              <div className="h-32 w-full bg-gray-200 overflow-hidden">
+              <div className="h-36 w-full bg-neutral-50 overflow-hidden border-b border-neutral-100">
                 {p.image_url ? (
-                  <img src={p.image_url} alt={p.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                  <img src={p.image_url} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs italic">Pas d'image</div>
+                  <div className="w-full h-full flex items-center justify-center text-neutral-400 text-xs italic bg-neutral-100">Aucun visuel</div>
                 )}
               </div>
               <div className="p-3 flex-1 flex flex-col justify-between text-left">
                 <div>
-                  <div className="font-bold text-sm line-clamp-2">{p.name}</div>
-                  <div className="text-[10px] text-gray-400 uppercase">{p.type}</div>
+                  <div className="font-semibold text-sm text-neutral-900 line-clamp-2 leading-tight min-h-[32px]">{p.name}</div>
+                  <div className="text-[10px] text-neutral-400 uppercase tracking-wider mt-1">{p.type}</div>
                 </div>
-                <div className="flex justify-between items-end mt-2">
-                  <span className="text-lg font-black text-blue-600">{p.prix}€</span>
-                  <span className="text-[9px] font-bold bg-blue-50 text-blue-700 px-2 py-1 rounded">STOCK: {p.exemplaires}</span>
+                <div className="flex justify-between items-end mt-3 pt-2 border-t border-neutral-100">
+                  <span className="text-lg font-bold text-neutral-950">{p.prix.toFixed(2)}€</span>
+                  <span className="text-[9px] font-mono font-medium bg-neutral-100 text-neutral-600 px-1.5 py-0.5 rounded uppercase">Stock: {p.exemplaires}</span>
                 </div>
               </div>
             </button>
@@ -138,77 +146,71 @@ export default function SalesPage() {
         </div>
       </div>
 
-      {/* SECTION PANIER FIXE */}
-      <div className="w-[400px] bg-white border-l flex flex-col shadow-2xl">
-        <div className="p-6 border-b flex justify-between items-center">
-          <h2 className="text-xl font-black uppercase tracking-widest text-gray-400">Détails Vente</h2>
-          <button onClick={() => setCart([])} className="text-xs text-red-500 hover:underline">Vider</button>
+      {/* SECTION COMMANDE (PLUS ÉTROITE : 320px) */}
+      <div className="w-[320px] bg-white flex flex-col shadow-[-10px_0_30px_rgba(0,0,0,0.03)] z-10">
+        <div className="p-5 border-b border-neutral-100 flex justify-between items-center bg-neutral-50/50">
+          <h2 className="text-sm font-black text-neutral-900 tracking-widest uppercase">Panier</h2>
+          <button onClick={() => setCart([])} className="p-2 text-neutral-400 hover:text-red-600 transition-colors">
+            <Trash2 size={16} />
+          </button>
         </div>
         
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 space-y-1">
           {cart.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-gray-300 italic text-sm">
-              Panier vide
+            <div className="h-full flex flex-col items-center justify-center text-neutral-300 border-2 border-dashed border-neutral-50 rounded-2xl">
+               <p className="italic text-xs">Aucun article</p>
             </div>
           ) : (
             cart.map(item => (
-              <div key={item.produit.id} className="flex gap-3 items-center bg-gray-50 p-2 rounded-xl">
-                <img src={item.produit.image_url} className="w-12 h-12 rounded-lg object-cover" alt="" />
-                <div className="flex-1">
-                  <div className="font-bold text-xs truncate w-32">{item.produit.name}</div>
-                  <div className="text-blue-600 font-bold text-sm">{(item.produit.prix * item.quantity).toFixed(2)}€</div>
+              <div key={item.produit.id} className="flex justify-between items-center py-2 border-b border-neutral-50 last:border-0 group">
+                <div className="flex-1 pr-2">
+                  <div className="font-bold text-[11px] text-neutral-800 leading-tight uppercase truncate">{item.produit.name}</div>
+                  <div className="text-[10px] font-bold text-neutral-400">{(item.produit.prix * item.quantity).toFixed(2)}€</div>
                 </div>
-                <div className="flex items-center gap-2 bg-white rounded-lg border px-2 py-1">
-                  <button onClick={() => updateQuantity(item.produit.id, -1)} className="font-bold">-</button>
-                  <span className="text-sm font-bold min-w-[15px] text-center">{item.quantity}</span>
-                  <button onClick={() => updateQuantity(item.produit.id, 1)} className="font-bold">+</button>
+                
+                <div className="flex items-center gap-2 bg-neutral-50 rounded-lg p-1">
+                  <button onClick={() => updateQuantity(item.produit.id, -1)} className="p-1 hover:bg-white rounded shadow-sm text-neutral-400 hover:text-black">
+                    <Minus size={12}/>
+                  </button>
+                  <span className="text-xs font-black min-w-[14px] text-center">{item.quantity}</span>
+                  <button onClick={() => updateQuantity(item.produit.id, 1)} className="p-1 hover:bg-white rounded shadow-sm text-neutral-400 hover:text-black">
+                    <Plus size={12}/>
+                  </button>
                 </div>
               </div>
             ))
           )}
         </div>
 
-        {/* SECTION PAIEMENT AMÉLIORÉE */}
-        <div className="p-6 bg-white border-t-4 border-gray-100 space-y-4 shadow-[0_-10px_20px_rgba(0,0,0,0.05)]">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-gray-400 font-bold uppercase text-xs tracking-widest">Total à régler</span>
-            <span className="text-4xl font-black text-black">
-              {calculateTotal().toFixed(2)} <span className="text-xl">€</span>
+        {/* SECTION PAIEMENT */}
+        <div className="p-5 bg-white border-t-2 border-neutral-100 space-y-4">
+          <div className="flex justify-between items-baseline mb-2">
+            <span className="text-[10px] font-black text-neutral-400 uppercase tracking-widest">Net à payer</span>
+            <span className="text-3xl font-black text-neutral-950">
+              {calculateTotal().toFixed(2)}€
             </span>
           </div>
           
-          <div className="space-y-3">
-            <p className="text-[11px] font-bold text-gray-400 uppercase tracking-tighter ml-1">Sélectionner le mode de règlement :</p>
-            
-            <div className="grid grid-cols-2 gap-4">
-              {/* BOUTON ESPECES */}
-              <button 
-                onClick={() => handleFinalizeSale('ESPECES')}
-                disabled={loading || cart.length === 0}
-                className="group relative flex flex-col items-center justify-center p-5 rounded-2xl border-2 border-green-600 bg-white hover:bg-green-600 transition-all active:scale-95 disabled:opacity-30 disabled:border-gray-200"
-              >
-                <span className="text-3xl mb-1 group-hover:scale-110 transition-transform">💵</span>
-                <span className="text-[11px] font-black uppercase text-green-600 group-hover:text-white transition-colors">Règlement</span>
-                <span className="text-sm font-black uppercase text-green-700 group-hover:text-white transition-colors">Espèces</span>
-              </button>
+          <div className="grid grid-cols-1 gap-2">
+            {/* BOUTON ESPECES */}
+            <button 
+              onClick={() => handleFinalizeSale('ESPECES')}
+              disabled={loading || cart.length === 0}
+              className="flex items-center justify-between w-full px-4 py-3 rounded-xl border-2 border-emerald-600 text-emerald-600 font-black text-[11px] uppercase tracking-widest hover:bg-emerald-600 hover:text-white transition-all active:scale-[0.98] disabled:opacity-20"
+            >
+              <span>Règlement Espèces</span>
+              <Banknote size={18} strokeWidth={2.5} />
+            </button>
 
-              {/* BOUTON CARTE */}
-              <button 
-                onClick={() => handleFinalizeSale('CARTE')}
-                disabled={loading || cart.length === 0}
-                className="group relative flex flex-col items-center justify-center p-5 rounded-2xl border-2 border-blue-600 bg-white hover:bg-blue-600 transition-all active:scale-95 disabled:opacity-30 disabled:border-gray-200"
-              >
-                <span className="text-3xl mb-1 group-hover:scale-110 transition-transform">💳</span>
-                <span className="text-[11px] font-black uppercase text-blue-600 group-hover:text-white transition-colors">Paiement</span>
-                <span className="text-sm font-black uppercase text-blue-700 group-hover:text-white transition-colors">Carte Bancaire</span>
-              </button>
-            </div>
-          </div>
-          
-          <div className="bg-gray-50 rounded-lg p-2 border border-dashed border-gray-200">
-             <p className="text-[10px] text-center text-gray-400 leading-tight italic">
-               L'inventaire sera automatiquement déduit après confirmation du paiement.
-             </p>
+            {/* BOUTON CARTE */}
+            <button 
+              onClick={() => handleFinalizeSale('CARTE')}
+              disabled={loading || cart.length === 0}
+              className="flex items-center justify-between w-full px-4 py-3 rounded-xl border-2 border-sky-600 text-sky-600 font-black text-[11px] uppercase tracking-widest hover:bg-sky-600 hover:text-white transition-all active:scale-[0.98] disabled:opacity-20"
+            >
+              <span>Paiement Carte</span>
+              <CreditCard size={18} strokeWidth={2.5} />
+            </button>
           </div>
         </div>
       </div>
